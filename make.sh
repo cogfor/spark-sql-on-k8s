@@ -2,7 +2,8 @@
 ###
 curdir=`pwd`
 
-IMG_BUILDER=/mnt/hgfs/linuxtools/img-builder/img-linux-amd64
+#IMG_BUILDER=/mnt/hgfs/linuxtools/img-builder/img-linux-amd64
+IMG_BUILDER=docker
 
 ######################################
 echo "build kyuubi start ..."
@@ -35,7 +36,7 @@ echo "build spark sql dialect over"
 
 echo "build sparkappctrl start ..."
 cd ./sparkop-ctrl/sparkappctrl
-go build
+env GOOS=linux GOARCH=amd64 go build
 mv ./sparkappctrl ../../bin/
 cd $curdir
 echo "build sparkappctrl over"
@@ -44,7 +45,7 @@ echo "build sparkappctrl over"
 
 echo "build traefikkit start ..."
 cd ./sparkop-ctrl/traefikkit
-go build
+env GOOS=linux GOARCH=amd64 go build
 mv ./traefikkit ../../bin/
 cd $curdir
 echo "build traefikkit over"
@@ -52,7 +53,6 @@ echo "build traefikkit over"
 ######################################
 
 # build sparkop-ctrl images
-# ./img-linux-amd64 build -t sparkop-ctrl:v1.0 -f k8s/docker/sparkop-ctrl/Dockerfile .
 echo "build sparkop-ctrl image start ..."
 ${IMG_BUILDER} build -t sparkop-ctrl:v1.0 -f k8s/docker/sparkop-ctrl/Dockerfile .
 echo "build sparkop-ctrl image over"
